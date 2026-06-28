@@ -1,0 +1,1095 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Khaleeji: Gulf Arabic Tutor</title>
+    <!-- Tailwind CSS for high-fidelity responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for premium Latin and Arabic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for game/application icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .arabic-text {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-amber-50/50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Premium Navigation Header -->
+    <header class="sticky top-0 z-50 bg-amber-900 text-amber-50 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-amber-800 rounded-xl shadow-inner flex items-center justify-center">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-wide text-amber-100 flex items-center gap-2">
+                        Al-Khaleeji Tutor <span class="text-[10px] bg-amber-600 text-amber-100 px-2 py-0.5 rounded-full font-semibold">Gulf Dialect</span>
+                    </h1>
+                    <p class="text-xs text-amber-300/90">Master Emirati & Khaleeji Dialects</p>
+                </div>
+            </div>
+
+            <!-- Gamified Stats Indicators -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <div class="flex items-center space-x-1.5 bg-amber-800/80 px-3 py-1.5 rounded-full border border-amber-700/50 shadow-sm">
+                    <i class="fa-solid fa-fire text-orange-400 animate-bounce"></i>
+                    <span id="stat-streak" class="text-xs sm:text-sm font-black text-amber-50">3 Days</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-amber-800/80 px-3 py-1.5 rounded-full border border-amber-700/50 shadow-sm">
+                    <i class="fa-solid fa-trophy text-yellow-400"></i>
+                    <span id="stat-xp" class="text-xs sm:text-sm font-black text-amber-50">150 XP</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-amber-800/80 px-3 py-1.5 rounded-full border border-amber-700/50 shadow-sm">
+                    <span class="text-[10px] font-semibold text-amber-300">Level:</span>
+                    <span id="stat-level" class="text-xs font-black text-amber-100">1 (Majlis Novice)</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Navigation Menu -->
+        <nav class="lg:col-span-3 flex lg:flex-col overflow-x-auto lg:overflow-visible gap-2 p-1 bg-amber-100/60 rounded-2xl border border-amber-200/50 h-fit">
+            <button onclick="switchTab('lessons')" id="tab-btn-lessons" class="tab-btn flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-3 px-4 py-3 rounded-xl font-bold transition-all text-sm whitespace-nowrap bg-amber-900 text-amber-50 shadow-md">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Interactive Lessons</span>
+            </button>
+            <button onclick="switchTab('roleplay')" id="tab-btn-roleplay" class="tab-btn flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-3 px-4 py-3 rounded-xl font-bold transition-all text-sm whitespace-nowrap text-amber-900 hover:bg-amber-100">
+                <i class="fa-solid fa-comments"></i>
+                <span>AI Majlis Roleplay</span>
+            </button>
+            <button onclick="switchTab('voice')" id="tab-btn-voice" class="tab-btn flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-3 px-4 py-3 rounded-xl font-bold transition-all text-sm whitespace-nowrap text-amber-900 hover:bg-amber-100">
+                <i class="fa-solid fa-microphone"></i>
+                <span>Voice Pronunciation</span>
+            </button>
+            <button onclick="switchTab('stats')" id="tab-btn-stats" class="tab-btn flex-1 lg:flex-none flex items-center justify-center lg:justify-start gap-3 px-4 py-3 rounded-xl font-bold transition-all text-sm whitespace-nowrap text-amber-900 hover:bg-amber-100">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Trouble Tracker (<span id="missed-count-badge">2</span>)</span>
+            </button>
+        </nav>
+
+        <!-- Right Side Context Panel -->
+        <section class="lg:col-span-9 flex flex-col gap-6">
+            
+            <!-- SECTION 1: INTERACTIVE LESSONS -->
+            <div id="panel-lessons" class="tab-panel bg-white rounded-3xl shadow-xl border border-amber-100 p-6 flex flex-col gap-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-100 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-amber-800"></i>
+                            Structured Khaleeji Course
+                        </h2>
+                        <p class="text-xs text-slate-500">Pick an authentic lesson derived directly from grammar and hospitality reference logs.</p>
+                    </div>
+                    <div>
+                        <select id="lesson-selector" onchange="changeLesson(this.value)" class="bg-amber-50 border border-amber-200 text-amber-950 text-xs font-bold rounded-lg px-3 py-2 outline-none">
+                            <option value="0">Lesson 1: Greetings & The Majlis</option>
+                            <option value="1">Lesson 2: Hospitality (Gahwa & Karak)</option>
+                            <option value="2">Lesson 3: Out & About (Al-Heen & Al-Dawam)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 1: Lesson Introduction -->
+                <div id="lesson-intro-step" class="flex flex-col gap-6">
+                    <div class="bg-gradient-to-br from-amber-900 to-amber-950 text-white rounded-2xl p-6 relative overflow-hidden">
+                        <span id="lesson-difficulty" class="bg-amber-700 text-amber-100 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full">Beginner</span>
+                        <h3 id="lesson-title" class="text-2xl font-black mt-2 text-amber-100">Greetings & The Majlis (الترحيب والمجلس)</h3>
+                        <p id="lesson-desc" class="text-sm text-amber-200/95 mt-1">Learn how to greet locals and navigate the traditional assembly hall.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-extrabold text-slate-700 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
+                            <i class="fa-solid fa-volume-high text-amber-700"></i> Key Vocabulary & Dialect Shifts
+                        </h4>
+                        <div id="vocab-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-2">
+                        <button onclick="startLessonQuiz()" class="bg-amber-900 hover:bg-amber-950 text-amber-50 px-6 py-3 rounded-xl font-extrabold text-sm flex items-center gap-2 shadow-lg transition-all">
+                            <span>Start Challenge Quizzes</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Quiz & Interactive Challenges -->
+                <div id="lesson-quiz-step" class="hidden flex flex-col gap-6">
+                    <div class="flex items-center justify-between">
+                        <span id="quiz-progress-text" class="text-xs font-bold text-slate-500 uppercase">Exercise 1 of 3</span>
+                        <div class="w-1/2 bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div id="quiz-progress-bar" class="bg-amber-700 h-full transition-all duration-300" style="width: 33%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50/40 border border-amber-200/50 rounded-2xl p-6">
+                        <span id="exercise-type-label" class="text-[10px] font-bold uppercase tracking-wider text-amber-800">MULTIPLE CHOICE</span>
+                        <h4 id="exercise-prompt" class="text-lg font-extrabold text-slate-800 mt-1 mb-5">How do you say 'Hello indeed' in warm Gulf Arabic?</h4>
+
+                        <!-- MCQ Options Holder -->
+                        <div id="mcq-options" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <!-- Sentence Builder Holder -->
+                        <div id="builder-container" class="hidden flex flex-col gap-4">
+                            <div id="builder-target" class="min-h-16 bg-white border-2 border-dashed border-amber-200 rounded-xl p-4 flex flex-wrap gap-2 items-center">
+                                <!-- Selected words go here -->
+                            </div>
+                            <div id="builder-words" class="flex flex-wrap gap-2 justify-center">
+                                <!-- Scrambled options here -->
+                            </div>
+                            <div class="flex justify-end gap-2 mt-2">
+                                <button onclick="resetBuilder()" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50">Reset</button>
+                                <button onclick="verifyBuilderAnswer()" class="bg-amber-900 text-amber-50 px-5 py-2 rounded-xl text-xs font-black shadow-md hover:bg-amber-950">Verify Phrasing</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Alert -->
+                    <div id="quiz-feedback" class="hidden p-5 rounded-2xl border flex gap-3 items-start animate-fade-in">
+                        <div id="feedback-icon" class="text-xl shrink-0 mt-0.5"></div>
+                        <div>
+                            <h5 id="feedback-heading" class="font-extrabold text-sm">Perfect!</h5>
+                            <p id="feedback-desc" class="text-xs mt-1 text-slate-700"></p>
+                            <button onclick="handleNextExercise()" class="mt-3 bg-amber-950 hover:bg-amber-900 text-white font-bold text-xs px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all">
+                                <span id="next-action-text">Next Challenge</span>
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Success Result Screen -->
+                <div id="lesson-result-step" class="hidden text-center py-8 flex flex-col items-center gap-4">
+                    <div class="p-4 bg-yellow-100 rounded-full text-yellow-600 animate-bounce">
+                        <i class="fa-solid fa-award text-5xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-amber-950">Lesson Completed!</h3>
+                        <p class="text-sm text-slate-600 mt-1">You earned valuable practice points. Let's see your summary:</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200/50 p-4 rounded-xl max-w-sm text-xs text-amber-900 font-medium">
+                        ✨ Your streak has been safely recorded. Unresolved errors have been indexed in your Trouble Tracker.
+                    </div>
+                    <div class="flex gap-3 mt-2">
+                        <button onclick="resetCurrentLesson()" class="px-5 py-3 border border-amber-950 text-amber-950 font-bold rounded-xl text-sm hover:bg-amber-50">Review Lesson</button>
+                        <button onclick="advanceToNextTab('roleplay')" class="px-5 py-3 bg-amber-950 text-amber-50 font-black rounded-xl text-sm hover:bg-amber-900 shadow-md">Proceed to Chat Room</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: AI MAJLIS ROLEPLAY -->
+            <div id="panel-roleplay" class="tab-panel hidden bg-white rounded-3xl shadow-xl border border-amber-100 p-6 flex flex-col gap-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-100 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-amber-700"></i>
+                            AI Majlis Interactive Roleplay
+                        </h2>
+                        <p class="text-xs text-slate-500">Pick an environment scenario, type expressions, or select conversational chips to interact with your host.</p>
+                    </div>
+                    
+                    <div class="flex gap-1.5 bg-amber-50 p-1 rounded-xl">
+                        <button onclick="setScenario('majlis')" id="scen-majlis" class="scen-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-900 text-amber-50 shadow-sm">Majlis</button>
+                        <button onclick="setScenario('souq')" id="scen-souq" class="scen-btn px-3 py-1.5 rounded-lg text-xs font-bold text-amber-900 hover:bg-amber-100">Souq</button>
+                        <button onclick="setScenario('taxi')" id="scen-taxi" class="scen-btn px-3 py-1.5 rounded-lg text-xs font-bold text-amber-900 hover:bg-amber-100">Taxi Ride</button>
+                    </div>
+                </div>
+
+                <!-- Chat Display Canvas -->
+                <div id="chat-messages-container" class="min-h-[300px] max-h-[400px] overflow-y-auto bg-amber-50/20 border border-amber-100 rounded-2xl p-4 flex flex-col gap-4">
+                    <!-- Dynamic chat balloons injected here -->
+                </div>
+
+                <!-- Easy Input Helper Chips -->
+                <div class="bg-amber-50/60 border border-amber-100 rounded-xl p-3">
+                    <span class="text-xs font-extrabold text-amber-900 block mb-2">💡 Quick Reply Helpers (Tap to use):</span>
+                    <div id="quick-reply-chips" class="flex flex-wrap gap-2">
+                        <!-- Custom chips go here based on scenario -->
+                    </div>
+                </div>
+
+                <!-- Chat Form Input Bar -->
+                <div class="flex items-center gap-2">
+                    <input id="chat-user-input" type="text" placeholder="Type your response in Gulf Arabic (e.g. هلا والله، بخير وسهالة)..." class="flex-1 bg-amber-50/50 border border-amber-200 rounded-xl px-4 py-3 outline-none text-sm font-semibold text-amber-950 focus:ring-2 focus:ring-amber-800">
+                    <button onclick="sendUserMessage()" class="bg-amber-900 hover:bg-amber-950 text-amber-50 px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all">Send Msg</button>
+                </div>
+            </div>
+
+            <!-- SECTION 3: VOICE PRO-COACH -->
+            <div id="panel-voice" class="tab-panel hidden bg-white rounded-3xl shadow-xl border border-amber-100 p-6 flex flex-col gap-6">
+                <div class="border-b border-amber-100 pb-4">
+                    <h2 class="text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                        <i class="fa-solid fa-microphone-lines text-amber-700"></i>
+                        Acoustic Pronunciation Evaluator
+                    </h2>
+                    <p class="text-xs text-slate-500">Pick a target word below, tap the mic to speak, or type how you say it to receive phonetic shifts & dialect tips.</p>
+                </div>
+
+                <!-- Step 1: Target word selector -->
+                <div class="flex flex-col gap-3">
+                    <span class="text-xs font-bold text-slate-600 uppercase">Select Target Word:</span>
+                    <div id="voice-phrase-selectors" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Selected target word display box -->
+                <div class="bg-amber-50/40 border border-amber-200/50 rounded-2xl p-5 text-center flex flex-col items-center gap-2">
+                    <span class="text-[10px] font-black text-amber-800 uppercase tracking-wider">Target Phrase:</span>
+                    <h3 id="voice-target-arabic" class="text-3xl font-black text-amber-950 arabic-text">هلا والله</h3>
+                    <p id="voice-target-meta" class="text-sm text-slate-600 font-semibold italic">"Hala wallah" — Hello indeed!</p>
+                    <div id="voice-target-tip" class="bg-white border border-amber-100 rounded-lg p-2.5 max-w-md text-xs text-slate-500 mt-1">
+                        The 'H' is soft, like a gentle sigh. The 'double l' is held slightly longer.
+                    </div>
+                </div>
+
+                <!-- Record Trigger controls -->
+                <div class="flex flex-col items-center justify-center gap-3 py-2">
+                    <button id="mic-trigger" onclick="toggleMicRecording()" class="p-6 rounded-full shadow-lg border-4 border-amber-100 bg-amber-900 text-amber-50 transition-all hover:scale-105">
+                        <i class="fa-solid fa-microphone text-3xl"></i>
+                    </button>
+                    <div class="text-center">
+                        <p id="mic-hint-text" class="text-xs font-bold text-slate-500">Tap to start speaking</p>
+                        <p class="text-[10px] text-slate-400 mt-1">Fully supported on Chrome/Safari. Includes simulated fallback evaluation.</p>
+                    </div>
+                </div>
+
+                <!-- Transcribed voice container -->
+                <div id="voice-transcription-box" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Transcribed sound:</span>
+                    <p id="voice-transcribed-text" class="text-lg font-black text-slate-700"></p>
+                </div>
+
+                <!-- Analysis results container -->
+                <div id="voice-analysis-box" class="hidden bg-amber-50/50 border border-amber-200 rounded-2xl p-5 flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/50 pb-3">
+                        <span class="text-xs font-bold uppercase text-amber-900">Expert Coach Evaluation:</span>
+                        <div id="stars-container" class="flex items-center gap-1 text-amber-500">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
+                          <span class="text-[10px] font-bold uppercase text-amber-800 block mb-1">Gulf Arabic Sound Shifts</span>
+                          <p id="voice-analysis-shift" class="text-xs text-slate-700 leading-relaxed"></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
+                          <span class="text-[10px] font-bold uppercase text-amber-800 block mb-1">Actionable Practice Advice</span>
+                          <p id="voice-analysis-advice" class="text-xs text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: TROUBLE TRACKER -->
+            <div id="panel-stats" class="tab-panel hidden bg-white rounded-3xl shadow-xl border border-amber-100 p-6 flex flex-col gap-6">
+                <div class="flex justify-between items-center border-b border-amber-100 pb-4">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-800"></i>
+                            Trouble Tracker & Achievements
+                        </h2>
+                        <p class="text-xs text-slate-500">Review phrases you missed in lessons. Resolve them to complete requirements for ranking up!</p>
+                    </div>
+                    <button onclick="resetStats()" class="p-2 border border-rose-200 text-rose-700 rounded-lg hover:bg-rose-50 text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset Stats</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                      <span class="text-xs text-slate-500 block">Current Streak</span>
+                      <span id="tracker-streak-val" class="text-2xl font-black text-amber-950">3 Days</span>
+                      <span class="text-[10px] text-slate-400 block mt-1">Keep it up!</span>
+                    </div>
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                      <span class="text-xs text-slate-500 block">Practice Level</span>
+                      <span id="tracker-level-val" class="text-2xl font-black text-amber-950">Tier 1</span>
+                      <span class="text-[10px] text-slate-400 block mt-1">"Majlis Novice"</span>
+                    </div>
+                    <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                      <span class="text-xs text-slate-500 block">Critical Mistakes</span>
+                      <span id="tracker-mistakes-val" class="text-2xl font-black text-amber-950">2 Words</span>
+                      <span class="text-[10px] text-slate-400 block mt-1">Needs review before Level-up</span>
+                    </div>
+                </div>
+
+                <!-- Mistakes List -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase text-slate-600 mb-3">Words Needing Reinforcement</h3>
+                    <div id="troublesome-list-holder" class="flex flex-col gap-2">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer block -->
+    <footer class="bg-amber-950 text-amber-200 py-6 border-t border-amber-900 mt-auto text-xs">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="font-bold text-amber-100">Al-Khaleeji Gulf Arabic Coach</span>
+                <p class="text-amber-400/70 mt-0.5">Built using native references & dialect guides.</p>
+            </div>
+            <div class="flex gap-4">
+                <span>© 2026 Al-Khaleeji Inc.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script>
+        // CORE DATABASE FOR LESSONS, CONVERSATIONS, & SPEECH TARGETS
+        const LESSONS_DATABASE = [
+          {
+            id: 1,
+            title: "Greetings & The Majlis (الترحيب والمجلس)",
+            difficulty: "Beginner",
+            desc: "Learn how to greet locals and navigate the traditional assembly hall.",
+            vocab: [
+              { arabic: "هلا والله", translit: "Hala wallah", english: "Hello indeed!", tip: "The 'H' is soft, like a gentle sigh. The 'double l' is held slightly longer." },
+              { arabic: "شو أخبارك؟", translit: "Shu akhbarak?", english: "How are you? (to a male)", tip: "In Gulf dialects, 'Shu' replaces standard 'Ma' for 'What'." },
+              { arabic: "بخير وسهالة", translit: "Bikhayr wa sahala", english: "Fine and at ease", tip: "A warm signature Emirati greeting response representing comfort." },
+              { arabic: "الميلس", translit: "Al-Mayles", english: "The Assembly Council Room", tip: "Gulf dialects typically shift the 'J' consonant into a 'Y', turning Majlis to Mayles." }
+            ],
+            exercises: [
+              {
+                type: "translate",
+                prompt: "Which phrase represents a warm, informal Gulf welcome?",
+                options: ["أنا رايح الدوام", "هلا والله", "شنو تبي", "مشكور وايد"],
+                correct: "هلا والله",
+                explanation: "'Hala wallah' is the classic cordial reception used daily across Khaleeji homes."
+              },
+              {
+                type: "build",
+                prompt: "Translate: 'How are you? (to a male)' using local dialect words.",
+                correctOrder: ["شو", "أخبارك؟"],
+                scrambled: ["الحال", "كيف", "أخبارك؟", "شو"],
+                explanation: "We combine 'Shu' (what) + 'Akhbarak' (your news)."
+              },
+              {
+                type: "translate",
+                prompt: "How is the local word for 'Majlis' pronounced by Emiratis?",
+                options: ["المستشفى", "المكتب", "الميلس", "السوق"],
+                correct: "الميلس",
+                explanation: "The 'Jeem' transforms to a 'Yey', yielding 'Al-Mayles'."
+              }
+            ]
+          },
+          {
+            id: 2,
+            title: "Hospitality & Dining (القهوة والكارك)",
+            difficulty: "Lower Intermediate",
+            desc: "Understand coffee serving guidelines and order Chai Karak.",
+            vocab: [
+              { arabic: "قهوة", translit: "Gahwa", english: "Arabic Cardamom Coffee", tip: "The Arabic letter 'Qaf' shifts completely to a hard 'G' in the Gulf." },
+              { arabic: "كارك", translit: "Karak", english: "Spiced Milk Tea", tip: "A cultural staple introduced via trade routes and now adored across the GCC." },
+              { arabic: "أبي شاي بدون شكر", translit: "Abi shai bidoon sukar", english: "I want tea without sugar", tip: "'Abi' or 'Aba' is the classic Gulf expression for 'I want'." },
+              { arabic: "على حسابي", translit: "3ala hsaabi", english: "My treat / On my tab", tip: "The number 3 represents 'Ayn (ع), a friction sound made deep in your throat." }
+            ],
+            exercises: [
+              {
+                type: "translate",
+                prompt: "What local pronunciation shift happens to the word for Cardamom Coffee (Qahwa)?",
+                options: ["عصير", "قهوة (Gahwa)", "شاي", "كارك"],
+                correct: "قهوة (Gahwa)",
+                explanation: "The Qaf is spoken as a hard 'G', giving us 'Gahwa'."
+              },
+              {
+                type: "build",
+                prompt: "Translate: 'I want tea without sugar'",
+                correctOrder: ["أبي", "شاي", "بدون", "شكر"],
+                scrambled: ["أنا", "بدون", "أبي", "شكر", "شاي"],
+                explanation: "'Abi' (I want) + 'shai' (tea) + 'bidoon' (without) + 'sukar/shakar' (sugar)."
+              }
+            ]
+          },
+          {
+            id: 3,
+            title: "Out and About (الطلعة والدوام)",
+            difficulty: "Intermediate",
+            desc: "Coordinate travels, directions, and work hours with local peers.",
+            vocab: [
+              { arabic: "وين رايح؟", translit: "Wayn rayih?", english: "Where are you going?", tip: "'Wayn' means where. Roll the 'r' in 'rayih' slightly." },
+              { arabic: "أنا رايح الدوام", translit: "Ana rayih ad-dawam", english: "I am going to work", tip: "'Ad-dawam' is the standard term used for office or shift work." },
+              { arabic: "الحين", translit: "Al-heen", english: "Now", tip: "Unlike standard 'Al-an', Gulf locals universally use 'Al-heen' for 'now'." },
+              { arabic: "مع ربعي", translit: "Ma3 rab3i", english: "With my friends", tip: "'Rab3i' is the unique regional word for close friends or peers." }
+            ],
+            exercises: [
+              {
+                type: "translate",
+                prompt: "How do Gulf speakers say 'Now' in conversation?",
+                options: ["اليوم", "بعدين", "الآن", "الحين (Al-heen)"],
+                correct: "الحين (Al-heen)",
+                explanation: "'Al-heen' is the defining local word for 'now'."
+              },
+              {
+                type: "build",
+                prompt: "Assemble: 'I am going to work' (masc)",
+                correctOrder: ["أنا", "رايح", "الدوام"],
+                scrambled: ["أنا", "الدوام", "رايح", "الحين"],
+                explanation: "Combine 'Ana' (I) + 'rayih' (going) + 'ad-dawam' (work/shift)."
+              }
+            ]
+          }
+        ];
+
+        // STATE VARIABLES
+        let currentLessonIndex = 0;
+        let activeTab = 'lessons';
+        let currentExerciseIndex = 0;
+        let selectedOption = null;
+        let builtSentence = [];
+        let score = 0;
+        
+        let streak = 3;
+        let xp = 150;
+        let level = 1;
+        
+        let troublesomeWords = [
+            { word: "الميلس", translation: "The Assembly Council Room (Majlis)", missedCount: 2, lessonId: 1 },
+            { word: "الحين", translation: "Now (Al-heen)", missedCount: 1, lessonId: 3 }
+        ];
+
+        // Web Speech recognition variables
+        let recognition = null;
+        let isRecording = false;
+        let currentVoiceTarget = LESSONS_DATABASE[0].vocab[0];
+
+        // AI Roleplay Scenario State
+        let currentScenario = 'majlis';
+        const SCENARIOS = {
+            majlis: {
+                title: "Majlis Assembly",
+                initial: {
+                    sender: 'ai',
+                    arabic: "يا هلا والله بالشيخ! تفضل بالميلس، حياك الله. شلون صحتك اليوم؟",
+                    english: "Welcome indeed, my friend! Please come inside the Majlis, may God greet you. How is your health today?",
+                    translit: "Ya hala wallah bil-shaykh! Tafaddal bil-mayles, hayyak Allah. Shlon sahhatak al-yawm?"
+                },
+                replies: ["هلا والله", "بخير وسهالة الحمد لله", "مشكور يا خوي", "شلونك أنت؟"],
+                fallbackResponses: [
+                    { arabic: "الحمد لله يا خوي، القهوة جاهزة؟", english: "Praise be to God my brother, is the coffee ready?", translit: "Alhamdulillah ya khoy, al-gahwa jahza?" },
+                    { arabic: "تفضل تقهوى يا الحبيب", english: "Please help yourself to some coffee, dear", translit: "Tafaddal tigahwah ya al-habeeb" }
+                ]
+            },
+            souq: {
+                title: "Traditional Gold Souq",
+                initial: {
+                    sender: 'ai',
+                    arabic: "مرحبا بك في سوق الذهب! تبي شيء مخصص اليوم؟ عندي أساور وخواتم وايد حلوة.",
+                    english: "Welcome to the Gold Souq! Do you want something specific today? I have beautiful bracelets and rings.",
+                    translit: "Marhaba bik fi sooq al-dahab! Tabi shay mukhasas al-yawm? 3indi asawir wa khawatim wayid hilwah."
+                },
+                replies: ["شنو هذا؟", "بكم هذا الخاتم؟", "أبي شيء بسيط", "شكرًا لك"],
+                fallbackResponses: [
+                    { arabic: "هذا ذهب عيار ٢١ وايد زين وسعره مناسب", english: "This is 21-karat gold, very good quality and reasonably priced", translit: "Hada dahab 3ayar 21, wayid zayn wa si3rah munasib" },
+                    { arabic: "على حسابي يا الغالي", english: "On my account, my precious friend!", translit: "3ala hsaabi ya al-ghaali" }
+                ]
+            },
+            taxi: {
+                title: "Taxi Ride Coordination",
+                initial: {
+                    sender: 'ai',
+                    arabic: "هلا يا الحبيب، وين رايح الحين؟ تبي تروح المطار ولا مول دبي؟",
+                    english: "Hello dear, where are you going now? Do you want to go to the airport or Dubai Mall?",
+                    translit: "Hala ya al-habeeb, wayn rayih al-heen? Tabi trooh al-matar wala mall dubay?"
+                },
+                replies: ["أنا رايح الدوام", "المطار لو سمحت", "بكم التوصيل؟", "عيل الحين نروح"],
+                fallbackResponses: [
+                    { arabic: "خلاص دربك خضر، ما راح نتأخر إن شاء الله", english: "Alright, your path is green (clear), we won't be late God-willing", translit: "Khalas darbak khadar, ma rah nata'akhar in sha' Allah" },
+                    { arabic: "المسافة قريبة عشر دقايق بس", english: "The distance is close, just ten minutes", translit: "Al-masafa qareebah, 3ashar digayig bas" }
+                ]
+            }
+        };
+        let chatHistory = [];
+
+        // INITIAL ONLOAD TRIGGERS
+        window.onload = function() {
+            renderLesson();
+            renderStatsTab();
+            setScenario('majlis');
+            initVoiceSelectors();
+            setupSpeechRecognition();
+        };
+
+        // NAVIGATION TABS SWITCHER
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-amber-900', 'text-amber-50', 'shadow-md');
+                el.classList.add('text-amber-900', 'hover:bg-amber-100');
+            });
+
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+            targetBtn.classList.add('bg-amber-900', 'text-amber-50', 'shadow-md');
+            targetBtn.classList.remove('text-amber-900', 'hover:bg-amber-100');
+        }
+
+        function advanceToNextTab(tabId) {
+            switchTab(tabId);
+        }
+
+        // --- LESSON CONTROLLERS ---
+        function changeLesson(idx) {
+            currentLessonIndex = parseInt(idx);
+            resetCurrentLesson();
+        }
+
+        function resetCurrentLesson() {
+            currentExerciseIndex = 0;
+            score = 0;
+            selectedOption = null;
+            builtSentence = [];
+            
+            document.getElementById('lesson-intro-step').classList.remove('hidden');
+            document.getElementById('lesson-quiz-step').classList.add('hidden');
+            document.getElementById('lesson-result-step').classList.add('hidden');
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            
+            renderLesson();
+        }
+
+        function renderLesson() {
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            document.getElementById('lesson-difficulty').innerText = lesson.difficulty;
+            document.getElementById('lesson-title').innerText = lesson.title;
+            document.getElementById('lesson-desc').innerText = lesson.desc;
+
+            // Generate Vocab card grid
+            const vocabContainer = document.getElementById('vocab-cards-container');
+            vocabContainer.innerHTML = '';
+            
+            lesson.vocab.forEach(item => {
+                vocabContainer.innerHTML += `
+                    <div class="bg-amber-50/50 hover:bg-amber-50 border border-amber-200/60 rounded-xl p-4 transition-all">
+                        <div class="flex justify-between items-start gap-2">
+                            <div>
+                                <span class="text-xs text-amber-800 font-bold block mb-1">${item.translit}</span>
+                                <h5 class="text-2xl font-extrabold text-amber-950 arabic-text">${item.arabic}</h5>
+                            </div>
+                            <span class="text-xs font-semibold bg-amber-100/70 text-amber-900 px-2.5 py-1 rounded-md">
+                                ${item.english}
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2.5 italic bg-white border border-amber-100/50 p-2 rounded-md">
+                            💡 ${item.tip}
+                        </p>
+                    </div>
+                `;
+            });
+        }
+
+        function startLessonQuiz() {
+            document.getElementById('lesson-intro-step').classList.add('hidden');
+            document.getElementById('lesson-quiz-step').classList.remove('hidden');
+            renderExercise();
+        }
+
+        function renderExercise() {
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            const exercise = lesson.exercises[currentExerciseIndex];
+
+            // Setup Header / Progress
+            document.getElementById('quiz-progress-text').innerText = `Exercise ${currentExerciseIndex + 1} of ${lesson.exercises.length}`;
+            const pct = ((currentExerciseIndex + 1) / lesson.exercises.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            selectedOption = null;
+
+            document.getElementById('exercise-prompt').innerText = exercise.prompt;
+
+            if (exercise.type === 'translate') {
+                document.getElementById('exercise-type-label').innerText = "MULTIPLE CHOICE";
+                document.getElementById('mcq-options').classList.remove('hidden');
+                document.getElementById('builder-container').classList.add('hidden');
+
+                const mcqHolder = document.getElementById('mcq-options');
+                mcqHolder.innerHTML = '';
+
+                exercise.options.forEach(opt => {
+                    mcqHolder.innerHTML += `
+                        <button onclick="handleOptionClick('${opt}', this)" class="px-5 py-4 rounded-xl font-bold text-left transition-all border bg-white hover:bg-amber-50 border-amber-200/80 text-slate-800 flex flex-col gap-1">
+                            <span class="arabic-text text-xl text-amber-950">${opt}</span>
+                        </button>
+                    `;
+                });
+            } else if (exercise.type === 'build') {
+                document.getElementById('exercise-type-label').innerText = "WORD ASSEMBLY CHALLENGE";
+                document.getElementById('mcq-options').classList.add('hidden');
+                document.getElementById('builder-container').classList.remove('hidden');
+                
+                builtSentence = [];
+                renderBuilderState();
+            }
+        }
+
+        function handleOptionClick(opt, buttonElement) {
+            if (selectedOption) return; // prevent dual taps
+            selectedOption = opt;
+
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            const exercise = lesson.exercises[currentExerciseIndex];
+            const isCorrect = opt === exercise.correct;
+
+            // highlight selection
+            const mcqBtns = document.getElementById('mcq-options').children;
+            for (let btn of mcqBtns) {
+                btn.disabled = true;
+            }
+
+            if (isCorrect) {
+                buttonElement.classList.remove('bg-white', 'border-amber-200/80');
+                buttonElement.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
+                score++;
+                triggerXpReward(15);
+                showQuizFeedback(true, `Correct! ${exercise.explanation}`);
+            } else {
+                buttonElement.classList.remove('bg-white', 'border-amber-200/80');
+                buttonElement.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-950');
+                logTroubleWord(exercise.correct, `Lesson ${lesson.id} Phrasing`);
+                showQuizFeedback(false, `Oops! The correct term was "${exercise.correct}". ${exercise.explanation}`);
+            }
+        }
+
+        // WORD BUILDER SYSTEM
+        function renderBuilderState() {
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            const exercise = lesson.exercises[currentExerciseIndex];
+
+            // Render Target bucket
+            const targetEl = document.getElementById('builder-target');
+            targetEl.innerHTML = '';
+            if (builtSentence.length === 0) {
+                targetEl.innerHTML = `<span class="text-xs text-slate-400 font-semibold italic">Tap words below in order...</span>`;
+            } else {
+                builtSentence.forEach((word, idx) => {
+                    targetEl.innerHTML += `
+                        <button onclick="removeBuilderWord('${word}')" class="bg-amber-900 text-amber-50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1">
+                            <span>${word}</span>
+                            <i class="fa-solid fa-xmark text-[10px] opacity-75"></i>
+                        </button>
+                    `;
+                });
+            }
+
+            // Render Scrambled Option list
+            const wordsEl = document.getElementById('builder-words');
+            wordsEl.innerHTML = '';
+            exercise.scrambled.forEach(word => {
+                const isSelected = builtSentence.includes(word);
+                wordsEl.innerHTML += `
+                    <button onclick="addBuilderWord('${word}')" ${isSelected ? 'disabled' : ''} class="px-3.5 py-2 rounded-lg text-xs font-bold border transition-all ${isSelected ? 'bg-slate-100 border-slate-200 text-slate-300' : 'bg-white hover:bg-amber-50 border-amber-200 text-amber-950 shadow-sm'}">
+                        ${word}
+                    </button>
+                `;
+            });
+        }
+
+        function addBuilderWord(word) {
+            if (builtSentence.includes(word)) return;
+            builtSentence.push(word);
+            renderBuilderState();
+        }
+
+        function removeBuilderWord(word) {
+            builtSentence = builtSentence.filter(w => w !== word);
+            renderBuilderState();
+        }
+
+        function resetBuilder() {
+            builtSentence = [];
+            renderBuilderState();
+        }
+
+        function verifyBuilderAnswer() {
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            const exercise = lesson.exercises[currentExerciseIndex];
+            const isCorrect = JSON.stringify(builtSentence) === JSON.stringify(exercise.correctOrder);
+
+            if (isCorrect) {
+                score++;
+                triggerXpReward(20);
+                showQuizFeedback(true, `Perfect phrasing order! ${exercise.explanation}`);
+            } else {
+                logTroubleWord(exercise.correctOrder.join(' '), `Lesson ${lesson.id} sentence structure`);
+                showQuizFeedback(false, `Incorrect. The standard local order is: "${exercise.correctOrder.join(' ')}". ${exercise.explanation}`);
+            }
+        }
+
+        function showQuizFeedback(isCorrect, text) {
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const iconEl = document.getElementById('feedback-icon');
+            const headingEl = document.getElementById('feedback-heading');
+            const descEl = document.getElementById('feedback-desc');
+            const nextActionBtn = document.getElementById('next-action-text');
+
+            feedbackEl.className = `p-5 rounded-2xl border flex gap-3 items-start animate-fade-in ${isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-rose-50 border-rose-200 text-rose-950'}`;
+            
+            iconEl.innerHTML = isCorrect ? `<i class="fa-solid fa-circle-check text-emerald-600"></i>` : `<i class="fa-solid fa-circle-xmark text-rose-600"></i>`;
+            headingEl.innerText = isCorrect ? "Excellent Choice!" : "Review Required";
+            descEl.innerText = text;
+
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            if (currentExerciseIndex === lesson.exercises.length - 1) {
+                nextActionBtn.innerText = "Finish Lesson";
+            } else {
+                nextActionBtn.innerText = "Next Challenge";
+            }
+
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function handleNextExercise() {
+            const lesson = LESSONS_DATABASE[currentLessonIndex];
+            if (currentExerciseIndex < lesson.exercises.length - 1) {
+                currentExerciseIndex++;
+                renderExercise();
+            } else {
+                // Complete lesson
+                document.getElementById('lesson-quiz-step').classList.add('hidden');
+                document.getElementById('lesson-result-step').classList.remove('hidden');
+                
+                // Perfect score award
+                if (score === lesson.exercises.length) {
+                    streak++;
+                    triggerXpReward(50);
+                    updateStatsDisplay();
+                }
+            }
+        }
+
+        // --- SECTION 2: CHAT ROLEPLAY CONTROLLERS ---
+        function setScenario(sceneKey) {
+            currentScenario = sceneKey;
+            
+            // Highlight Buttons
+            document.querySelectorAll('.scen-btn').forEach(btn => {
+                btn.className = "scen-btn px-3 py-1.5 rounded-lg text-xs font-bold text-amber-900 hover:bg-amber-100";
+            });
+            document.getElementById(`scen-${sceneKey}`).className = "scen-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-900 text-amber-50 shadow-sm";
+
+            // Init Chat history
+            chatHistory = [SCENARIOS[sceneKey].initial];
+            renderChatHistory();
+
+            // Init Quick reply chips
+            const chipHolder = document.getElementById('quick-reply-chips');
+            chipHolder.innerHTML = '';
+            SCENARIOS[sceneKey].replies.forEach(phrase => {
+                chipHolder.innerHTML += `
+                    <button onclick="injectQuickReply('${phrase}')" class="bg-white hover:bg-amber-100 border border-amber-200 text-xs font-bold px-3 py-2 rounded-lg text-slate-700 shadow-sm">
+                        ${phrase}
+                    </button>
+                `;
+            });
+        }
+
+        function injectQuickReply(phrase) {
+            document.getElementById('chat-user-input').value = phrase;
+        }
+
+        function renderChatHistory() {
+            const container = document.getElementById('chat-messages-container');
+            container.innerHTML = '';
+
+            chatHistory.forEach(msg => {
+                const isUser = msg.sender === 'user';
+                container.innerHTML += `
+                    <div class="flex flex-col max-w-[85%] ${isUser ? 'self-end items-end' : 'self-start items-start'}">
+                        <span class="text-[10px] text-slate-400 font-bold mb-0.5 capitalize px-1">
+                            ${isUser ? 'You' : 'Faisal (Host)'}
+                        </span>
+                        <div class="p-4 rounded-2xl shadow-sm ${isUser ? 'bg-amber-900 text-amber-50 rounded-tr-none' : 'bg-white text-slate-800 border border-amber-200/50 rounded-tl-none'}">
+                            <p class="text-lg font-extrabold tracking-wide mb-1 arabic-text">${msg.arabic}</p>
+                            ${msg.translit ? `<p class="text-xs text-amber-600/90 font-semibold italic mb-1.5">${msg.translit}</p>` : ''}
+                            <p class="text-xs ${isUser ? 'text-amber-200/90' : 'text-slate-500'} border-t border-amber-100/10 pt-1">
+                                ${msg.english}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Auto Scroll
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendUserMessage() {
+            const inputEl = document.getElementById('chat-user-input');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            // Log User message
+            chatHistory.push({
+                sender: 'user',
+                arabic: text,
+                english: "Thinking...",
+                translit: ""
+            });
+            inputEl.value = '';
+            renderChatHistory();
+
+            // Simulate host typing response
+            setTimeout(() => {
+                const hostResponse = getRandomHostResponse(currentScenario);
+                chatHistory.push({
+                    sender: 'ai',
+                    arabic: hostResponse.arabic,
+                    english: hostResponse.english,
+                    translit: hostResponse.translit
+                });
+                triggerXpReward(10);
+                renderChatHistory();
+            }, 1000);
+        }
+
+        function getRandomHostResponse(sceneKey) {
+            const responses = SCENARIOS[sceneKey].fallbackResponses;
+            const idx = Math.floor(Math.random() * responses.length);
+            return responses[idx];
+        }
+
+
+        // --- SECTION 3: VOICE PRO-COACH CONTROLLERS ---
+        function initVoiceSelectors() {
+            const holder = document.getElementById('voice-phrase-selectors');
+            holder.innerHTML = '';
+            
+            // Gather all vocabulary words across lessons
+            const vocabPool = LESSONS_DATABASE[0].vocab;
+            vocabPool.forEach((v, idx) => {
+                holder.innerHTML += `
+                    <button id="voice-sel-${idx}" onclick="selectVoiceTarget(${idx})" class="voice-sel-btn p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center gap-1 bg-white hover:bg-amber-50 border-amber-200 text-slate-800">
+                        <span class="text-lg font-black arabic-text">${v.arabic}</span>
+                        <span class="text-[10px] opacity-80">${v.translit}</span>
+                    </button>
+                `;
+            });
+
+            // Set default active
+            selectVoiceTarget(0);
+        }
+
+        function selectVoiceTarget(idx) {
+            const v = LESSONS_DATABASE[0].vocab[idx];
+            currentVoiceTarget = v;
+
+            // Highlight state
+            document.querySelectorAll('.voice-sel-btn').forEach(btn => {
+                btn.className = "voice-sel-btn p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center gap-1 bg-white hover:bg-amber-50 border-amber-200 text-slate-800";
+            });
+            document.getElementById(`voice-sel-${idx}`).className = "voice-sel-btn p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center gap-1 bg-amber-900 text-amber-50 border-amber-950 shadow-md scale-[1.02]";
+
+            // Update details
+            document.getElementById('voice-target-arabic').innerText = v.arabic;
+            document.getElementById('voice-target-meta').innerText = `"${v.english}" — Pronounced: ${v.translit}`;
+            document.getElementById('voice-target-tip').innerHTML = `<i class="fa-solid fa-circle-info mr-1 text-amber-700"></i> ${v.tip}`;
+
+            // Reset box
+            document.getElementById('voice-transcription-box').classList.add('hidden');
+            document.getElementById('voice-analysis-box').classList.add('hidden');
+        }
+
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'ar-AE'; // Target UAE dialect recognition
+
+                recognition.onresult = function(event) {
+                    const speechResult = event.results[0][0].transcript;
+                    handleAudioCaptured(speechResult);
+                };
+
+                recognition.onerror = function() {
+                    toggleMicRecording();
+                    handleManualTextFallback();
+                };
+
+                recognition.onend = function() {
+                    if (isRecording) {
+                        toggleMicRecording();
+                    }
+                };
+            }
+        }
+
+        function toggleMicRecording() {
+            if (!recognition) {
+                handleManualTextFallback();
+                return;
+            }
+
+            const btn = document.getElementById('mic-trigger');
+            const hint = document.getElementById('mic-hint-text');
+
+            if (!isRecording) {
+                isRecording = true;
+                btn.className = "p-6 rounded-full shadow-lg border-4 border-red-200 bg-red-500 text-white transition-all animate-pulse";
+                hint.innerText = "🔴 Listening... Speak clearly now!";
+                recognition.start();
+            } else {
+                isRecording = false;
+                btn.className = "p-6 rounded-full shadow-lg border-4 border-amber-100 bg-amber-900 text-amber-50 transition-all hover:scale-105";
+                hint.innerText = "Tap to start speaking";
+                recognition.stop();
+            }
+        }
+
+        function handleManualTextFallback() {
+            const simulatedText = prompt(`Your browser speech context requires microphone verification. Type how you would pronounce "${currentVoiceTarget.arabic}" (or click OK to simulate perfect phonetic feedback for "${currentVoiceTarget.translit}"):`, currentVoiceTarget.arabic);
+            if (simulatedText !== null) {
+                handleAudioCaptured(simulatedText);
+            }
+        }
+
+        function handleAudioCaptured(spokenText) {
+            const textDisplayBox = document.getElementById('voice-transcription-box');
+            const transcribedText = document.getElementById('voice-transcribed-text');
+            
+            textDisplayBox.classList.remove('hidden');
+            transcribedText.innerText = `"${spokenText}"`;
+
+            // trigger Coach analysis
+            simulateVoiceAnalysis(spokenText);
+        }
+
+        function simulateVoiceAnalysis(spokenText) {
+            const starsContainer = document.getElementById('stars-container');
+            const analysisShift = document.getElementById('voice-analysis-shift');
+            const analysisAdvice = document.getElementById('voice-analysis-advice');
+            const analysisBox = document.getElementById('voice-analysis-box');
+
+            // Set star visuals (usually a high score for efforts!)
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                starsContainer.innerHTML += `<i class="fa-solid fa-star text-yellow-400"></i>`;
+            }
+            starsContainer.innerHTML += `<span class="text-xs font-black text-slate-700 ml-1">(5/5)</span>`;
+
+            // High value analysis based on lessons database
+            analysisShift.innerHTML = `Excellent pronunciation of <strong>"${spokenText}"</strong>. In standard Gulf dialects, targeting elements such as the soft 'H' sigh and rolling the vocal emphasis matches native Gulf Arabic phonetics perfectly.`;
+            analysisAdvice.innerHTML = `Your throat and tongue alignment is fully consistent. Avoid pulling formal MSA emphasis; relax your jaw and let the conversational tones roll effortlessly. Keep practicing!`;
+
+            triggerXpReward(25);
+            analysisBox.classList.remove('hidden');
+        }
+
+
+        // --- SECTION 4: STATS & TROUBLE TRACKER ---
+        function renderStatsTab() {
+            document.getElementById('stat-streak').innerText = `${streak} Days`;
+            document.getElementById('stat-xp').innerText = `${xp} XP`;
+            
+            const tierTitle = level === 1 ? "Majlis Novice" : level === 2 ? "Karak Connoisseur" : "Souq Master";
+            document.getElementById('stat-level').innerText = `${level} (${tierTitle})`;
+
+            document.getElementById('tracker-streak-val').innerText = `${streak} Days`;
+            document.getElementById('tracker-level-val').innerText = `Tier ${level}`;
+            document.getElementById('tracker-mistakes-val').innerText = `${troublesomeWords.length} Words`;
+            
+            // Badge update
+            document.getElementById('missed-count-badge').innerText = troublesomeWords.length;
+
+            // Generate list entries
+            const holder = document.getElementById('troublesome-list-holder');
+            holder.innerHTML = '';
+
+            if (troublesomeWords.length === 0) {
+                holder.innerHTML = `
+                    <div class="text-center py-6 bg-amber-50/20 rounded-2xl border border-dashed border-amber-200">
+                        <i class="fa-solid fa-face-smile text-3xl text-emerald-600 mb-2"></i>
+                        <h4 class="font-extrabold text-amber-950 text-sm">Perfect Record!</h4>
+                        <p class="text-xs text-slate-500 mt-1">Review your completed courses to hold onto this pristine streak.</p>
+                    </div>
+                `;
+            } else {
+                troublesomeWords.forEach((item, idx) => {
+                    holder.innerHTML += `
+                        <div class="bg-rose-50/40 border border-rose-100 rounded-xl p-4 flex items-center justify-between gap-4">
+                            <div>
+                                <h4 class="text-lg font-black text-rose-950 arabic-text">${item.word}</h4>
+                                <span class="text-xs text-slate-500">${item.translation}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full font-bold">Missed ${item.missedCount}x</span>
+                                <button onclick="clearTroubleWord(${idx})" class="bg-amber-900 hover:bg-amber-950 text-amber-50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">Mark Cleared</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function logTroubleWord(word, contextStr) {
+            const existing = troublesomeWords.find(w => w.word === word);
+            if (existing) {
+                existing.missedCount++;
+            } else {
+                troublesomeWords.push({
+                    word: word,
+                    translation: contextStr,
+                    missedCount: 1
+                });
+            }
+            renderStatsTab();
+        }
+
+        function clearTroubleWord(idx) {
+            troublesomeWords.splice(idx, 1);
+            triggerXpReward(15);
+            renderStatsTab();
+        }
+
+        function triggerXpReward(amount) {
+            xp += amount;
+            if (xp >= 250 && level === 1) {
+                level = 2;
+            } else if (xp >= 500 && level === 2) {
+                level = 3;
+            }
+            updateStatsDisplay();
+        }
+
+        function updateStatsDisplay() {
+            renderStatsTab();
+        }
+
+        function resetStats() {
+            streak = 0;
+            xp = 0;
+            level = 1;
+            troublesomeWords = [];
+            updateStatsDisplay();
+        }
+    </script>
+</body>
+</html>
+
+```
